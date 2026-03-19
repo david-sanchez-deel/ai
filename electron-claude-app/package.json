@@ -1,42 +1,45 @@
 {
   "name": "claude-desktop",
   "version": "1.0.0",
-  "description": "Desktop Electron app for Claude AI — uses your existing claude.ai subscription",
-  "main": "src/main.js",
+  "description": "Desktop Claude app powered by the Claude Agent SDK — uses your existing Claude Code subscription",
+  "main": "dist/main/index.js",
   "scripts": {
-    "start": "electron .",
-    "build": "electron-builder",
-    "build:mac": "electron-builder --mac",
-    "build:win": "electron-builder --win",
-    "build:linux": "electron-builder --linux"
+    "build": "tsc",
+    "start": "npm run build && electron .",
+    "dev": "tsc && electron .",
+    "build:app": "npm run build && electron-builder",
+    "build:mac": "npm run build && electron-builder --mac",
+    "build:win": "npm run build && electron-builder --win",
+    "build:linux": "npm run build && electron-builder --linux"
   },
   "author": "",
   "license": "MIT",
+  "dependencies": {
+    "@anthropic-ai/claude-agent-sdk": "^0.1.0"
+  },
   "devDependencies": {
     "electron": "^33.0.0",
-    "electron-builder": "^25.0.0"
+    "electron-builder": "^25.0.0",
+    "typescript": "^5.5.0"
   },
   "build": {
-    "appId": "com.claude.desktop",
+    "appId": "com.claude.desktop-agent",
     "productName": "Claude Desktop",
     "directories": {
-      "output": "dist"
+      "output": "release"
     },
     "files": [
-      "src/**/*",
-      "assets/**/*"
+      "dist/**/*",
+      "src/renderer/**/*"
     ],
     "mac": {
       "category": "public.app-category.productivity",
-      "icon": "assets/icon.png",
       "target": ["dmg", "zip"]
     },
     "win": {
-      "icon": "assets/icon.png",
       "target": ["nsis", "portable"]
     },
     "linux": {
-      "icon": "assets/icon.png",
       "category": "Utility",
       "target": ["AppImage", "deb"]
     }
